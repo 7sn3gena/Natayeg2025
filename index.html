@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نتيجة الثانوية العامة 2025</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(to bottom, #e0f7fa, #fff);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      background-color: #00796b;
+      color: white;
+      padding: 20px;
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .input-container {
+      margin: 30px auto;
+    }
+
+    input {
+      padding: 10px;
+      width: 300px;
+      border-radius: 10px;
+      border: 1px solid #888;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    .result-box {
+      margin-top: 30px;
+      border: 2px dashed #4caf50;
+      padding: 20px;
+      width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #f9f9f9;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .scrolling-footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(90deg, #00bcd4, #4caf50, #ff9800, #00bcd4);
+      color: white;
+      padding: 10px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .scrolling-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scroll-left 15s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .side-text {
+      position: fixed;
+      top: 100px;
+      font-size: 14px;
+      font-weight: bold;
+      width: 200px;
+      color: #555;
+    }
+
+    .right-text {
+      right: 10px;
+    }
+
+    .left-text {
+      left: 10px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>نتيجة الثانوية العامة 2025</h1>
+
+  <div class="input-container">
+    <input type="text" id="searchInput" placeholder="اكتب الاسم الكامل أو رقم الجلوس">
+    <button onclick="searchResult()">بحث</button>
+  </div>
+
+  <div class="result-box" id="resultBox" style="display: none;"></div>
+
+  <div class="scrolling-footer">
+    <div class="scrolling-text">powered by H. Agena</div>
+  </div>
+
+  <div class="side-text right-text">
+    صلي على النبي وادعي دعوة حلوة للي عمل الموقع ولك بالمثل
+  </div>
+
+  <div class="side-text left-text">
+    ايا كانت النتيجة فاعلم انها هي الخير ليك <br>
+    فرب الخير لا يأتي إلا بالخير<br>
+    <strong>وَعَسَىٰ أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ ۖ وَعَسَىٰ أَن تُحِبُّوا شَيْئًا وَهُوَ شَرٌّ لَّكُمْ ۗ وَاللَّهُ يَعْلَمُ وَأَنتُمْ لَا تَعْلَمُونَ</strong>
+  </div>
+
+  <script>
+    let results = [];
+
+    fetch('results.json')
+      .then(res => res.json())
+      .then(data => { results = data; })
+      .catch(err => {
+        document.getElementById('resultBox').style.display = 'block';
+        document.getElementById('resultBox').innerHTML = "حدث خطأ في تحميل البيانات. تأكد من وجود الملف 'results.json'.";
+      });
+
+    function searchResult() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const result = results.find(item =>
+        item.id === query || item.name.toLowerCase() === query
+      );
+
+      const box = document.getElementById('resultBox');
+      box.style.display = 'block';
+
+      if (result) {
+        const emoji = result.score >= 205 ? "🎉" : "❤️";
+        const message = result.score >= 205
+          ? "ألف مبروك يا بطل وبالتوفيق"
+          : "فَعَسَى أَنْ تَكْرَهُوا شَيْئًا وَيَجْعَلَ اللَّهُ فِيهِ خَيْرًا كَثِيرًا";
+
+        box.innerHTML = `
+          <h3>الاسم: ${result.name}</h3>
+          <p>رقم الجلوس: ${result.id}</p>
+          <p>الدرجة: ${result.score}</p>
+          <p style="margin-top:15px; font-weight: bold; font-size: 18px;">${message} ${emoji}</p>
+        `;
+      } else {
+        box.innerHTML = "لم يتم العثور على النتيجة. تأكد من كتابة الاسم الكامل أو رقم الجلوس بشكل صحيح.";
+      }
+    }
+  </script>
+
+</body>
+</html>
